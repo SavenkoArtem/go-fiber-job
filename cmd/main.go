@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"go-fiber-job/internal/home"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
-	fmt.Println("Start")
+	app := fiber.New()
+
+	home.NewHandler(app) // вызов handler-а internal/home
+
+	app.Listen(":3000")
 }
