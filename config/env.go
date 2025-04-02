@@ -18,7 +18,7 @@ func Init() {
 
 func getString(key string, defaultValue string) string {
 	value := os.Getenv(key)
-	if value != "" {
+	if value == "" {
 		return defaultValue
 	}
 	return value
@@ -49,5 +49,17 @@ type DatabaseConfig struct {
 func NewDatabaseConfig() *DatabaseConfig {
 	return &DatabaseConfig{
 		url: getString("DATABASE_URL", ""),
+	}
+}
+
+type LogConfig struct {
+	Level  int
+	Format string
+}
+
+func NewLogConfig() *LogConfig {
+	return &LogConfig{
+		Level:  getInt("LOG_LEVEL", 0),
+		Format: getString("LOG_FORMAT", "json"),
 	}
 }
