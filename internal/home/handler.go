@@ -10,6 +10,11 @@ type HomeHandler struct {
 	customLogger *zerolog.Logger
 }
 
+type User struct {
+	Id   int
+	Name string
+}
+
 // конструктор
 func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 	h := &HomeHandler{
@@ -22,8 +27,23 @@ func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 }
 
 func (h *HomeHandler) home(c *fiber.Ctx) error {
-	return fiber.NewError(fiber.StatusBadRequest, "Limit params is undefined")
+	// data := struct {
+	// 	Count   int
+	// 	IsAdmin bool
+	// 	CanUse  bool
+	// }{Count: 10, IsAdmin: true, CanUse: true}
 
+	users := []User{
+		{Id: 1, Name: "Anton"},
+		{Id: 2, Name: "Vasya"},
+		{Id: 3, Name: "Petya"},
+	}
+	names := []string{"Anton", "Vasia", "Petya"}
+	data := struct {
+		Names []string
+		Users []User
+	}{Names: names, Users: users}
+	return c.Render("page", data)
 }
 
 func (h *HomeHandler) error(c *fiber.Ctx) error {
