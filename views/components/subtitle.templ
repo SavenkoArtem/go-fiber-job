@@ -1,0 +1,13 @@
+package components
+
+css subtitleClass(){
+    font-size: {"16px"};
+    color: {"#BABABA"};
+    font-width: {"bold"};
+}
+
+templ SubTitle(subtitle string) {
+    <h1 class={subtitleClass()}>
+        { subtitle }
+    </h1>
+}

@@ -1,6 +1,9 @@
 package home
 
 import (
+	"go-fiber-job/pkg/tmpadapter"
+	"go-fiber-job/views"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 )
@@ -21,29 +24,13 @@ func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 		router:       router,
 		customLogger: customLogger,
 	}
-	api := h.router.Group("/api")
-	api.Get("/", h.home)
-	api.Get("/error", h.error)
+	h.router.Get("/", h.home)
+	h.router.Get("/404", h.error)
 }
 
 func (h *HomeHandler) home(c *fiber.Ctx) error {
-	// data := struct {
-	// 	Count   int
-	// 	IsAdmin bool
-	// 	CanUse  bool
-	// }{Count: 10, IsAdmin: true, CanUse: true}
-
-	users := []User{
-		{Id: 1, Name: "Anton"},
-		{Id: 2, Name: "Vasya"},
-		{Id: 3, Name: "Petya"},
-	}
-	names := []string{"Anton", "Vasia", "Petya"}
-	data := struct {
-		Names []string
-		Users []User
-	}{Names: names, Users: users}
-	return c.Render("page", data)
+	component := views.Main()
+	return tmpadapter.Render(c, component)
 }
 
 func (h *HomeHandler) error(c *fiber.Ctx) error {
