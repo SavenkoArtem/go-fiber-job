@@ -3,6 +3,7 @@ package main
 import (
 	"go-fiber-job/config"
 	"go-fiber-job/internal/home"
+	"go-fiber-job/internal/vacancy"
 	"go-fiber-job/pkg/logger"
 
 	"github.com/gofiber/contrib/fiberzerolog"
@@ -24,6 +25,7 @@ func main() {
 	app.Static("/public", "./public")
 
 	home.NewHandler(app, customLogger) // вызов handler-а internal/home
+	vacancy.NewHandler(app, customLogger)
 
 	app.Listen(":3000")
 }
