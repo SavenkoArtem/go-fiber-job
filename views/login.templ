@@ -1,0 +1,32 @@
+package views
+
+import "go-fiber-job/views/components"
+import "go-fiber-job/views/layout"
+
+templ Login() {	
+	@layout.Layout(layout.LayoutProps {
+		Title: "Sign in to web site",
+		MetaDescription: "Sign in to web site Jobs",
+	}) {		
+		<main>
+			@LoginStyle()
+			@layout.Header() {
+				@components.Title("Sign in")
+				@components.SubTitle("Sign in with login")
+			}
+			
+		</main>
+	}
+}
+
+templ LoginStyle() {
+	<style>
+		.main__submit-form {
+			background-color: rgba(48,150,137,0.10);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 60px 0 120px 0;			
+		}
+	</style>
+}
