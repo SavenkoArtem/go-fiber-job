@@ -1,0 +1,79 @@
+package widgets
+
+import "go-fiber-job/internal/vacancy"
+import "go-fiber-job/views/components"
+import "fmt"
+
+templ VacancyList(vacancies []vacancy.Vacancy, pagesCount, page int) {
+    @VacancyListStyle()
+    <div class="vacancy-list__wrapper">
+        @components.Title2("Last vacanciest", false)
+        <p>Take important vacancies a few minute</p>
+        <div class="vacancy-list">
+            for _, vacancy := range vacancies {            
+                @components.VacancyCard(components.VacancyCardProps{
+                    Email: vacancy.Email,
+                    Location: vacancy.Location,
+                    Salary: vacancy.Salary,
+                    CompanyType: vacancy.Type,
+                    Company: vacancy.Company,
+                    Createdat: vacancy.CreatedAt,
+                    Role: vacancy.Role,
+                })
+            }
+        </div>
+        <div class="vacancy-list__pagination">
+            <div class="vacancy-list__pagination-item">
+                if page != 1 {
+                    <img src="/public/icons/chevron-left.svg" alt="arrow left" />
+                    <a href={templ.SafeURL(fmt.Sprintf("/?page=%d", page -1))}>Previos</a>
+                }
+            </div>
+            <div class="vacancy-list__pagination-item">
+                if page != pagesCount {
+                    <img src="/public/icons/chevron-right.svg" alt="arrow right" />
+                    <a href={templ.SafeURL(fmt.Sprintf("/?page=%d", page + 1))}>Next</a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+templ VacancyListStyle() {
+    <style>
+        .vacancy-list__wrapper {
+            width: 100%;
+            max-width: 1296px;
+            margin: 0 auto;
+            padding: 60px 0;            
+        }
+        .vacancy-list__wrapper p {
+            margin-bottom: 60px;
+        }
+        .vacancy-list {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 24px;            
+            margin-bottom: 50px;
+        }
+        .vacancy-list__pagination{
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;            
+        }
+        .vacancy-list__pagination-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .vacancy-list__pagination-item a {
+            text-decoration: none;
+            color: #6C757D;
+        }
+        .vacancy-list__pagination-item a:hover {
+            text-decoration: none;
+            color: #585d61;
+        }
+    </style>
+}

@@ -4,6 +4,7 @@ import (
 	"go-fiber-job/config"
 	"go-fiber-job/internal/home"
 	"go-fiber-job/internal/vacancy"
+	"go-fiber-job/pkg/database"
 	"go-fiber-job/pkg/logger"
 
 	"github.com/gofiber/contrib/fiberzerolog"
@@ -15,6 +16,7 @@ func main() {
 	config.Init()
 	config.NewDatabaseConfig()
 	logConfig := config.NewLogConfig()
+	dbConfig := config.NewDatabaseConfig()
 	customLogger := logger.NewLogger(logConfig)
 
 	app := fiber.New()
@@ -23,9 +25,16 @@ func main() {
 	}))
 	app.Use(recover.New()) // позволяет восстановиться после падения (не падать)
 	app.Static("/public", "./public")
+	dbpool := database.CreateDbPool(dbConfig, customLogger)
+	defer dbpool.Close()
 
-	home.NewHandler(app, customLogger) // вызов handler-а internal/home
-	vacancy.NewHandler(app, customLogger)
+	// Repository
+	vacancyRepo := vacancy.NewVacancyRepository(dbpool, customLogger)
+
+	// Handler
+
+	home.NewHandler(app, customLogger, vacancyRepo) // вызов handler-а internal/home
+	vacancy.NewHandler(app, customLogger, vacancyRepo)
 
 	app.Listen(":3000")
 }
