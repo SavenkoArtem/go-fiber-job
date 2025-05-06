@@ -1,0 +1,45 @@
+package widgets
+
+import "go-fiber-job/views/components"
+
+templ LoginForm() {
+
+    @LoginFormStyle()
+    <div id="login-result"></div>
+    <form
+        hx-ext="response-targets" 
+        hx-post="/api/login"
+        hx-trigger="submit"
+        class="login-form"
+        hx-target-error="#login-result"
+        hx-swap="innerHTML"
+        >
+        @components.Input(components.InputProps{
+            Name: "email",
+            Placeholder: "Email",
+        })
+        @components.Input(components.InputProps{
+            Name: "password",
+            Placeholder: "Password",
+            Type: "password",
+        })
+        @components.SubmitButton(){
+            <div>Sign in</div>
+        }
+    </form>     
+}
+
+templ LoginFormStyle() {
+   <style>
+        #login-result {
+            margin-bottom: 15px;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;            
+            gap: 30px;
+            width: 100%;
+            max-width: 520px;
+        }
+   </style>    
+}
