@@ -2,6 +2,7 @@ package views
 
 import "go-fiber-job/views/components"
 import "go-fiber-job/views/layout"
+import "go-fiber-job/views/widgets"
 
 templ Login() {	
 	@layout.Layout(layout.LayoutProps {
@@ -13,7 +14,8 @@ templ Login() {
 			@layout.Header() {
 				@components.Title("Sign in")
 				@components.SubTitle("Sign in with login")
-			}
+				@widgets.LoginForm()
+			}		
 			
 		</main>
 	}
